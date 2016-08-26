@@ -6,7 +6,7 @@ echo "-----> Installing MySQL and MongoDB"
 
 echo "-----> Downloading..."
 # download the minimal mysql tar file
-wget -nv https://raw.githubusercontent.com/gaumire/mysql-binary/master/mysql.tar.gz -O mysql.tar.gz 2>&1
+wget -nv https://raw.githubusercontent.com/sgasser/mysql-binary/master/mysql.tar.gz -O mysql.tar.gz 2>&1
 
 mongodbfile="mongodb-linux-x86_64-3.2.0"
 wget -nv https://fastdl.mongodb.org/linux/${mongodbfile}.tgz -O mongodb.tar.gz 2>&1
@@ -14,16 +14,15 @@ wget -nv https://fastdl.mongodb.org/linux/${mongodbfile}.tgz -O mongodb.tar.gz 2
 echo "-----> Extracting..."
 
 # make a directory to untar the binary
-mkdir -p $BUILD_DIR/.heroku /tmp/mysql_extract /tmp/mongodb_extract $BUILD_DIR/.heroku/vendor/mysql $BUILD_DIR/.heroku/vendor/mongodb
+mkdir -p $BUILD_DIR/.heroku /tmp/mysql_extract /tmp/mongodb_extract $BUILD_DIR/.heroku/vendor/mysql/bin $BUILD_DIR/.heroku/vendor/mongodb
 
 # untar and move inside BUILD_DIR
 tar -C /tmp/mysql_extract -xvf mysql.tar.gz
-mv /tmp/mysql_extract/* $BUILD_DIR/.heroku/vendor/mysql
+mv /tmp/mysql_extract/* $BUILD_DIR/.heroku/vendor/mysql/bin
 
 tar -C /tmp/mongodb_extract -xvf mongodb.tar.gz
 mv /tmp/mongodb_extract/${mongodbfile}/* $BUILD_DIR/.heroku/vendor/mongodb
 
 cat > $BUILD_DIR/.profile.d/mysql-mongodb.sh <<EOF
 export PATH=$PATH:/app/.heroku/vendor/mysql/bin:/app/.heroku/vendor/mongodb/bin
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/app/.heroku/vendor/mysql/lib
 EOF
